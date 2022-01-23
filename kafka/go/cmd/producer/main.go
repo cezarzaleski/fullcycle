@@ -16,8 +16,12 @@ func main() {
 }
 
 func NewKafkaProducer() *kafka.Producer {
+	// consultar documentação para customizar integração com Kafka
 	configMap := &kafka.ConfigMap{
-		"bootstrap.servers": "go_kafka_1:9092",
+		"bootstrap.servers":   "go_kafka_1:9092",
+		"delivery.timeout.ms": "0",
+		"acks":                "all",
+		"enable.idempotence":  "true",
 	}
 	p, err := kafka.NewProducer(configMap)
 	if err != nil {
