@@ -33,19 +33,18 @@ describe("Order repository test", () => {
 
   it("should create a new order", async () => {
     const customerRepository = new CustomerRepository();
-    const customer = new Customer("123", "Customer 1");
-    customer.Address = new Address(1, "Street 1", "City 1", "Zipcode 1");
-    await customerRepository.create(customer);
     const productRepository = new ProductRepository();
+    const orderRepository = new OrderRepository();
+    const customer = new Customer("123", "Customer 1");
     const product = new Product("p1", "Product 1", 10)
-    await productRepository.create(product);
+    customer.Address = new Address(1, "Street 1", "City 1", "Zipcode 1");
     const orderItem = new OrderItem("i1", product.name, product.price, product.id, 2)
     const order = new Order("1", customer.id, [orderItem])
-    const orderRepository = new OrderRepository();
+    await productRepository.create(product);
+    await customerRepository.create(customer);
     await orderRepository.create(order)
 
     const orderModel = await OrderModel.findOne({where: {id: order.id}, include: ["items"]});
-
     expect(orderModel.toJSON()).toStrictEqual({
       id: order.id,
       customer_id: customer.id,
@@ -61,5 +60,23 @@ describe("Order repository test", () => {
         }
       ],
     });
+  });
+
+  it('should find a order', async () => {
+    const customerRepository = new CustomerRepository();
+    const productRepository = new ProductRepository();
+    const orderRepository = new OrderRepository();
+    const customer = new Customer("123", "Customer 1");
+    const product = new Product("p1", "Product 1", 10)
+    customer.Address = new Address(1, "Street 1", "City 1", "Zipcode 1");
+    const orderItem = new OrderItem("i1", product.name, product.price, product.id, 2)
+    const order = new Order("1", customer.id, [orderItem])
+    await productRepository.create(product);
+    await customerRepository.create(customer);
+    await orderRepository.create(order)
+
+    const orderResult = await orderRepository.find(order.id);
+
+    expect(order).toStrictEqual(orderResult);
   });
 })
