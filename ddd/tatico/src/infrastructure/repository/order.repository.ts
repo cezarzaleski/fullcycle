@@ -13,7 +13,7 @@ export default class OrderRepository implements OrderInterfaceRepository {
       items: entity.items.map(item => ({
         id: item.id,
         name: item.name,
-        price: item.price / item.quantity,
+        price: item.price,
         product_id: item.productId,
         quantity: item.quantity
       }))
@@ -37,7 +37,7 @@ export default class OrderRepository implements OrderInterfaceRepository {
       throw new Error("Order not found");
     }
     const items = orderModel.items
-      .map(item => new OrderItem(item.id, item.name, item.price, item.product_id, item.quantity))
+      .map(item => new OrderItem(item.id, item.name, item.price/item.quantity, item.product_id, item.quantity))
     return new Order(orderModel.id, orderModel.customer_id, items)
   }
 
