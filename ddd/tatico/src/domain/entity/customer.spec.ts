@@ -21,7 +21,7 @@ describe("Customer unit teste", () => {
   })
   it("Should activate customer", () => {
     let customer = new Customer("123", "Name")
-    customer.address = new Address("123", "Name", "Rua")
+    customer.changeAddress(new Address(1, "Street 1", "Zipcode 1", "City 1"))
 
     customer.activate()
 

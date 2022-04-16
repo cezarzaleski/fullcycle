@@ -3,7 +3,7 @@ import Address from './address';
 export default class Customer {
   private _id: string;
   private _name: string;
-  private _address?: Address;
+  private _Address?: Address;
   private _rewardPoints = 0;
   private _active: boolean = false;
 
@@ -13,8 +13,12 @@ export default class Customer {
     this.validate()
   }
 
-  set address(value: Address) {
-    this._address = value;
+  set Address(value: Address) {
+    this._Address = value;
+  }
+
+  get Address(): Address {
+    return this._Address
   }
 
   get id(): string {
@@ -47,7 +51,7 @@ export default class Customer {
   }
 
   activate() {
-    if (this._address === undefined) {
+    if (this._Address === undefined) {
       throw new Error("Address is mandatory to activate a customer");
     }
     this._active = true;
@@ -59,6 +63,10 @@ export default class Customer {
 
   deactivate() {
     this._active = false
+  }
+
+  changeAddress(address: Address) {
+    this._Address = address
   }
 }
 
