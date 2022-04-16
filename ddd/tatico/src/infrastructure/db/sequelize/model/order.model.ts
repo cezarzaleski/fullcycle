@@ -11,6 +11,9 @@ export default class OrderModel extends Model {
   @Column
   declare id: string;
 
+  @Column({ allowNull: false })
+  declare total: number;
+
   @ForeignKey(() => CustomerModel)
   @Column({ allowNull: false })
   declare customer_id: string;

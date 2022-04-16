@@ -3,6 +3,14 @@ import CustomerModel from "../db/sequelize/model/customer.model";
 import CustomerRepository from "../repository/customer.repository";
 import Customer from "../../domain/entity/customer";
 import Address from "../../domain/entity/address";
+import OrderModel from "../db/sequelize/model/order.model";
+import OrderItemModel from "../db/sequelize/model/order-item.model";
+import ProductModel from "../db/sequelize/model/product.model";
+import ProductRepository from "../repository/product.repository";
+import Product from "../../domain/entity/product";
+import OrderItem from "../../domain/entity/order_item";
+import Order from "../../domain/entity/order";
+import OrderRepository from "../repository/order.repository";
 
 describe("Order repository test", () => {
   let sequelize: Sequelize;
@@ -15,7 +23,7 @@ describe("Order repository test", () => {
       sync: { force: true },
     });
 
-    await sequelize.addModels([CustomerModel]);
+    await sequelize.addModels([CustomerModel, OrderModel, OrderItemModel, ProductModel]);
     await sequelize.sync();
   });
 
@@ -23,24 +31,35 @@ describe("Order repository test", () => {
     await sequelize.close();
   });
 
-  it("should create a customer", async () => {
+  it("should create a new order", async () => {
     const customerRepository = new CustomerRepository();
     const customer = new Customer("123", "Customer 1");
-    const address = new Address(1, "Street 1", "City 1", "Zipcode 1", );
-    customer.Address = address
+    customer.Address = new Address(1, "Street 1", "City 1", "Zipcode 1");
     await customerRepository.create(customer);
+    const productRepository = new ProductRepository();
+    const product = new Product("p1", "Product 1", 10)
+    await productRepository.create(product);
+    const orderItem = new OrderItem("i1", product.name, product.price, product.id, 2)
+    const order = new Order("1", customer.id, [orderItem])
+    const orderRepository = new OrderRepository();
+    await orderRepository.create(order)
 
-    const customerModel = await CustomerModel.findOne({ where: { id: "123" } });
+    const orderModel = await OrderModel.findOne({where: {id: order.id}, include: ["items"]});
 
-    expect(customerModel.toJSON()).toStrictEqual({
-      id: "123",
-      name: customer.name,
-      active: customer.isActive,
-      rewardPoints: customer.rewardPoints,
-      street: address.street,
-      number: address.number,
-      zipcode: address.zip,
-      city: address.city,
+    expect(orderModel.toJSON()).toStrictEqual({
+      id: order.id,
+      customer_id: customer.id,
+      total: order.total(),
+      items: [
+        {
+          id: orderItem.id,
+          name: orderItem.name,
+          quantity: orderItem.quantity,
+          price: orderItem.price,
+          order_id: order.id,
+          product_id: product.id,
+        }
+      ],
     });
   });
 })
