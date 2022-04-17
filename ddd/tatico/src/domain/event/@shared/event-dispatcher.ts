@@ -1,0 +1,33 @@
+import EventDispatcherInterface from "./event-dispatcher.interface";
+import EventInterface from "./event.interface";
+import EventHandlerInterface from "./event-handler.interface";
+
+export default class EventDispatcher implements EventDispatcherInterface{
+  private _eventHandlers: {[eventName: string]: EventHandlerInterface[] } = {}
+
+  get getEventHandlers(): { [eventName: string]: EventHandlerInterface[] } {
+    return this._eventHandlers;
+  }
+
+  notify(event: EventInterface): void {
+  }
+
+  register(eventName: string, eventHandler: EventHandlerInterface): void {
+    if (!this._eventHandlers[eventName]) {
+      this._eventHandlers[eventName] = []
+    }
+    this._eventHandlers[eventName].push(eventHandler)
+  }
+
+  unregister(eventName: string, eventHandler: EventHandlerInterface): void {
+    if (this._eventHandlers[eventName]) {
+      const index = this._eventHandlers[eventName].indexOf(eventHandler)
+      if (index != -1) this._eventHandlers[eventName].splice(index, 1)
+    }
+  }
+
+  unregisterAll(): void {
+    this._eventHandlers = {}
+  }
+
+}
