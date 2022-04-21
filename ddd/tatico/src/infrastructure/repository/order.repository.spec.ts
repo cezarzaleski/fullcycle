@@ -1,19 +1,19 @@
 import {Sequelize} from 'sequelize-typescript';
 import CustomerModel from "../db/sequelize/model/customer.model";
 import CustomerRepository from "../repository/customer.repository";
-import Customer from "../../domain/entity/customer";
-import Address from "../../domain/entity/address";
 import OrderModel from "../db/sequelize/model/order.model";
 import OrderItemModel from "../db/sequelize/model/order-item.model";
 import ProductModel from "../db/sequelize/model/product.model";
 import ProductRepository from "../repository/product.repository";
-import Product from "../../domain/entity/product";
-import OrderItem from "../../domain/entity/order_item";
-import Order from "../../domain/entity/order";
-import OrderRepository from "../repository/order.repository";
-import CustomerInterfaceRepository from "../../domain/repository/customer-interface-repository";
-import ProductInterfaceRepository from "../../domain/repository/product-interface-repository";
-import OrderInterfaceRepository from "../../domain/repository/order-interface-repository";
+import CustomerInterfaceRepository from "../../domain/customer/repository/customer-interface-repository";
+import OrderInterfaceRepository from "../../domain/checkout/repository/order-interface-repository";
+import ProductInterfaceRepository from "../../domain/product/repository/product-interface-repository";
+import Order from "../../domain/checkout/entity/order";
+import Address from "../../domain/customer/value-object/address";
+import Customer from "../../domain/customer/entity/customer";
+import OrderRepository from "./order.repository";
+import OrderItem from "../../domain/checkout/entity/order_item";
+import Product from "../../domain/product/entity/product";
 
 describe("Order repository test", () => {
   let sequelize: Sequelize;
@@ -34,7 +34,7 @@ describe("Order repository test", () => {
       dialect: "sqlite",
       storage: ":memory:",
       logging: false,
-      sync: { force: true },
+      sync: {force: true},
     });
 
     await sequelize.addModels([CustomerModel, OrderModel, OrderItemModel, ProductModel]);

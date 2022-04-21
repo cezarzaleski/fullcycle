@@ -1,9 +1,9 @@
 import EventDispatcher from "./event-dispatcher";
-import CustomerCreatedEvent from "../customer/customer-created.event";
-import SendConsoleLog1Handler from "../customer/handler/send-console-log1.handler";
-import SendConsoleLog2Handler from "../customer/handler/send-console-log2.handler";
-import SendConsoleLogHandler from "../customer/handler/send-console-log.handler";
-import ChangedCustomerAddressEvent from "../customer/changed-customer-address.event";
+import SendConsoleLog1Handler from "../../customer/event/handler/send-console-log1.handler";
+import SendConsoleLog2Handler from "../../customer/event/handler/send-console-log2.handler";
+import CustomerCreatedEvent from "../../customer/event/customer-created.event";
+import SendConsoleLogHandler from "../../customer/event/handler/send-console-log.handler";
+import ChangedCustomerAddressEvent from "../../customer/event/changed-customer-address.event";
 
 describe("Domain events customer test", () => {
   it("should register events handler from creating customer", () => {
