@@ -3,7 +3,7 @@ import {v4 as uuid} from "uuid"
 
 describe("Order factory unit teste", () => {
   it('should create an order', () => {
-    const orderProps = {
+    const orderProps: any = {
       id: uuid().toString(),
       customerId: uuid().toString(),
       items: [
