@@ -1,17 +1,18 @@
 import CustomerInterfaceRepository from "../../../domain/customer/repository/customer-interface-repository";
-import { InputCreateCustomerDto, OutputCreateCustomerDto } from "./create.dto";
-import CustomerFactory from "../../../domain/customer/factory/customer.factory";
 import Address from "../../../domain/customer/value-object/address";
+import { InputUpdateCustomerDto, OutputUpdateCustomerDto } from "./update.dto";
 
-export default class CreateCustomerUseCase {
+export default class UpdateCustomerUsecase {
   constructor(private readonly customerRepository: CustomerInterfaceRepository) {
   }
 
-  async execute(input: InputCreateCustomerDto): Promise<OutputCreateCustomerDto> {
+  async execute(input: InputUpdateCustomerDto): Promise<OutputUpdateCustomerDto> {
     const {street, city, number, zip} = input.address
+    const customer = await this.customerRepository.find(input.id)
     const address = new Address(number, street, city, zip);
-    const customer = CustomerFactory.createWithAddress(input.name, address)
-    await this.customerRepository.create(customer)
+    customer.changeAddress(address)
+    customer.changeName(input.name)
+    await this.customerRepository.update(customer)
     return {
       id: customer.id,
       name: customer.name,
@@ -22,7 +23,5 @@ export default class CreateCustomerUseCase {
         zip: customer.Address.zip
       }
     }
-
   }
-
 }
