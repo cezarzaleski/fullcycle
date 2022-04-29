@@ -1,7 +1,7 @@
 import Customer from "../../../domain/customer/entity/customer";
 import Address from "../../../domain/customer/value-object/address";
 import { OutputFindCustomerDto } from "./find.dto";
-import FindCustomerUseCase from "./find.customer";
+import FindCustomerUseCase from "./find.customer.usecase";
 
 const customer = new Customer("123", "Customer 1");
 const address = new Address(1, "Street 1", "City 1", "Zipcode 1", );

@@ -4,7 +4,7 @@ import CustomerRepository from "../../../infrastructure/customer/repository/sequ
 import Customer from "../../../domain/customer/entity/customer";
 import Address from "../../../domain/customer/value-object/address";
 import { OutputFindCustomerDto } from "./find.dto";
-import FindCustomerUseCase from "./find.customer";
+import FindCustomerUseCase from "./find.customer.usecase";
 
 describe("Test find customer use case", () => {
 

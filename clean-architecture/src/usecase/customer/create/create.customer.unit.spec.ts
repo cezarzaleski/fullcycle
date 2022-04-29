@@ -1,5 +1,5 @@
 import { InputCreateCustomerDto } from "./create.dto";
-import CreateCustomerUseCase from "./create.customer";
+import CreateCustomerUseCase from "./create.customer.usecase";
 
 const MockRepository = () => {
   return {
